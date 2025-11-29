@@ -26,4 +26,6 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: e.message}, { status: 401})
         }
     }
+
+    return NextResponse.json({ error: "Bad Request"}), { status: 400};
 }
