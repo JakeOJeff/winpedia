@@ -19,7 +19,6 @@ export async function POST(req: Request) {
     if ( !userId) return NextResponse.json({ error: "Unauthorized" }, { Status: 401})
     const body = await req.json();
 
-
     const user = await prisma.user.findUnique({ where: { id: userId }})
     const today = new Date().toDateString();
 
@@ -57,7 +56,7 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json({ post });
-    
+
 
 
 }
