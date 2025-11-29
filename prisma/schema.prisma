@@ -14,7 +14,7 @@ model User {
   passwordhash  String    
   bio           String?
   avatarUrl     String?
-  streak        int       @default ( 0 )
+  streak        Int       @default ( 0 )
   iceStatus     String    @default("Frozen")
   postsToday    Int       @default ( 0 )
   lastPostDate  DateTime? 
@@ -29,7 +29,7 @@ model Post {
   userId        String
   content       String
   imageUrl      String?
-  likes         Int       @default(0)
+  likes         Like[]
   createdAt     DateTime  @default(now())
 }
 
