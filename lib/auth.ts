@@ -34,3 +34,17 @@ export async function login({ email, password}) {
 export function setAuthCookie(res, token) {
     res.setHeader('Set-Cookie', `${COOKIE_NAME}=${token}; HttpOnly; Path=/; Max-Age=${60 * 60 * 24 * 30}`);
 }
+
+
+export function getUserIdFromReq(req) {
+    const cookie = req.headers.get('cookie');
+    const match = cookie.match(/ice_auth=([^;]+)/);
+    if ( !match ) return null;
+    try {
+        const payload = jwt.verify(match[1], JWT_SECRET);
+        return payload.userId;
+    }
+    catch (e) {
+        return null;
+    }
+}
