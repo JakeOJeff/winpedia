@@ -36,7 +36,29 @@ export async function POST(req: Request) {
         include: { user: true },
     })
 
+    const updated = await prisma.user.update({
+        where: { id: userId },
+        data: {
+            postsToday: { increment: 1 },
+            lastPostDate: new Date(),
+        },
+    })
+
+    const fresh = await prisma.user.findUnique({ where: { id: userId } })
+    if (fresh) {
+        let newIce = 'Frozen';
+        if (fresh.postsToday === 1) newIce = 'Melting';
+        if (fresh.postsToday >= 2) newIce = 'Melted';
+        await prisma.user.update({
+            where: { id: userId },
+            data: { iceStatus: newIce },
+
+        })
+    }
+
+    return NextResponse.json({ post });
     
+
 
 }
 
