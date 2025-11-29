@@ -16,3 +16,16 @@ export async function register({ email, username, password}) {
     const user = await prisma.user.create({ data: { email, username, passwordHash}});
     return user;
 }
+
+export async function login({ email, password}) {
+    const user = await prisma.user.findUnique({
+        where: { email }
+    })
+    if ( !user ) throw new Error("No user found with that email");
+
+    const ok = await bcrypt.compare(password, user.passwordHash);
+    if ( !ok) throw new Error('Invalid')
+
+    const token = jwt.sign({ userId: user.id})
+    return { token, user};
+}
