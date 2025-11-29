@@ -29,3 +29,8 @@ export async function login({ email, password}) {
     const token = jwt.sign({ userId: user.id})
     return { token, user};
 }
+
+
+export function setAuthCookie(res, token) {
+    res.setHeader('Set-Cookie', `${COOKIE_NAME}=${token}; HttpOnly; Path=/; Max-Age=${60 * 60 * 24 * 30}`);
+}
