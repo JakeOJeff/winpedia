@@ -10,7 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 export default function Home() {
   return (
-    <div>
+    <div className="m-4">
       <SignedOut>
         <SignInButton mode="modal">
           <Button>
@@ -18,9 +18,9 @@ export default function Home() {
           </Button>
         </SignInButton>
         <SignUpButton mode="modal">
-          <button className="bg-[#6c47ff] text-ceramic-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
+          <Button variant={"secondary"}>
             Sign Up
-          </button>
+          </Button>
         </SignUpButton>
       </SignedOut>
       <SignedIn>
