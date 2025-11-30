@@ -5,6 +5,7 @@ import {
   ClerkProvider,
 } from '@clerk/nextjs'
 import { ThemeProvider } from "@/components/ThemeProvider"
+import Navbar from "@/components/Navbar";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -40,7 +41,11 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-          {children}
+            <div className="min-h-screen">
+              <Navbar />
+              {children}
+
+            </div>
           </ThemeProvider>
         </body>
       </html>
