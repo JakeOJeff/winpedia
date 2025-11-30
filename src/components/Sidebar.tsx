@@ -2,10 +2,28 @@ import { currentUser } from "@clerk/nextjs/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SignInButton, SignUpButton } from "@clerk/nextjs";
 import { Button } from "./ui/button";
+import { getUserByClerkId } from "@/actions/user.action";
+import { Link } from "lucide-react";
 async function Sidebar() {
     const authUser = await currentUser()
     if (!authUser) return <UnauthenticatedSidebar />;
-    return <div>Sidebar</div> 
+
+    const user = await getUserByClerkId(authUser.id);
+    if (!user) return null
+    
+    return <div className="sticky top-20">
+        <Card>
+            <CardContent className="pt-6">
+                <div className="flex flex col items-center text-center">
+                    <Link
+                        href = {`/profile/${user.username}`}
+                        className="flex flex-col items-center justify-center"
+                    >
+                    </Link>
+                </div>
+            </CardContent>
+        </Card>
+    </div>
 }
 
 

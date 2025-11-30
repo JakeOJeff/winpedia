@@ -6,7 +6,7 @@ import { SignInButton, UserButton } from "@clerk/nextjs";
 import ModeToggle from "./ModeToggle";
 import { currentUser } from "@clerk/nextjs/server";
 
-export async function DesktopNavbar() {
+async function DesktopNavbar() {
     const user = await currentUser();
 
     return (
