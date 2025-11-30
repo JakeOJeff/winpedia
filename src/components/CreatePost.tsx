@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
-import { ImageIcon } from "lucide-react";
+import { ImageIcon, Loader2Icon, SendIcon } from "lucide-react";
 
 function CreatePost() {
     const { user } = useUser();
@@ -49,6 +49,24 @@ function CreatePost() {
                                     Photo
                             </Button>
                         </div>
+                        <Button
+                            className="flex items-center"
+                            onClick={handleSubmit}
+                            disabled={(!content.trim() && !imageUrl) || isPosting}
+                        >
+                            {isPosting ? (
+                                <>
+                                    <Loader2Icon className="size-4 mr-2 animate-spin" />
+                                        Posting...
+                                </>
+                            ) : (
+                                
+                                <>
+                                    <SendIcon className="size-4 mr-2" />
+                                    Post
+                                </>
+                            )}
+                        </Button>
                     </div>
                 </div>
             </CardContent>
