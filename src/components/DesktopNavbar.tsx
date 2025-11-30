@@ -1,4 +1,4 @@
-import { Bell, BellIcon, HomeIcon, UserIcon } from "lucide-react";
+import { Bell, BellIcon, Rss, UserIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { SignInButton, UserButton } from "@clerk/nextjs";
@@ -14,6 +14,7 @@ async function DesktopNavbar() {
             <ModeToggle />
             <Button variant={"ghost"} className="flex items-center gap-2" asChild>
                 <Link href="/">
+                    <Rss className="w-2 h-4"/>
                     <span className="hidden lg:inline">Feed</span>
                 </Link>
             </Button>
@@ -22,10 +23,19 @@ async function DesktopNavbar() {
                 <>
                     <Button variant="ghost" className="flex items-center gap-2" asChild>
                         <Link href="/notifications">
-                            <BellIcon className="w-4 h-4"/>
-                            <span className="hidden lg:inline">Notifications</span>
+                            <BellIcon className="w-2 h-4"/>
+                            <span className="hidden lg:inline">0</span>
                         </Link>
                     </Button>
+
+                    <Button variant="ghost" className="flex items-center gap-2" asChild>
+                        <Link href={`/profile/${
+                                user.username ?? user.emailAddresses[0].emailAddress.split("@")[0]
+                            }`}>
+                            <UserIcon className="w-2 h-4" />
+                        </Link>
+                    </Button>
+                    <UserButton />
                 </>
             ) : (<></>)}
         </div>
