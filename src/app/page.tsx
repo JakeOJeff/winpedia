@@ -1,6 +1,7 @@
 
 import { currentUser } from "@clerk/nextjs/server";
 import CreatePost from "@/components/CreatePost";
+import RecommendedUsers from "@/components/RecommendedUsers"
 
 export default async function Home() {
   const user = await currentUser();
@@ -13,7 +14,7 @@ export default async function Home() {
         </div>
 
         <div className="hidden lg:block lg:col-span-4 sticky top-20">
-          WhoToFollow
+          <RecommendedUsers />
         </div>
     </div>
   );
