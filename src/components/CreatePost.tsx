@@ -8,13 +8,14 @@ import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { ImageIcon, Loader2Icon, SendIcon } from "lucide-react";
 import { createPost } from "@/actions/post.action";
+import toast from "react-hot-toast";
 
 function CreatePost() {
-  const { user } = useUser();
-  const [content, setContent] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
-  const [isPosting, setIsPosting] = useState(false);
-  const [showImageUpload, setShowImageUpload] = useState(false);
+    const { user } = useUser();
+    const [content, setContent] = useState("");
+    const [imageUrl, setImageUrl] = useState("");
+    const [isPosting, setIsPosting] = useState(false);
+    const [showImageUpload, setShowImageUpload] = useState(false);
 
     const handleSubmit = async () => {
         if ((!content.trim()) && !imageUrl) return
@@ -26,9 +27,12 @@ function CreatePost() {
                 setContent("");
                 setImageUrl("");
                 setShowImageUpload(false);
-            }
-        } catch(error) {
 
+                toast.success("Uploaded Post!")
+            }
+        } catch (error) {
+            console.error("Failed to create post:", error);
+            toast.error("Failed to create post");
         } finally {
             setIsPosting(false)
         }
@@ -63,7 +67,7 @@ function CreatePost() {
                                 disabled={isPosting}
                             >
                                 <ImageIcon className="size-4 mr-2" />
-                                    Photo
+                                Photo
                             </Button>
                         </div>
                         <Button
@@ -74,10 +78,10 @@ function CreatePost() {
                             {isPosting ? (
                                 <>
                                     <Loader2Icon className="size-4 mr-2 animate-spin" />
-                                        Posting...
+                                    Posting...
                                 </>
                             ) : (
-                                
+
                                 <>
                                     <SendIcon className="size-4 mr-2" />
                                     Post
