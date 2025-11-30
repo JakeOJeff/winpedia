@@ -1,11 +1,13 @@
+import Link from "next/link";
+
 import { currentUser } from "@clerk/nextjs/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SignInButton, SignUpButton } from "@clerk/nextjs";
 import { Button } from "./ui/button";
 import { getUserByClerkId } from "@/actions/user.action";
-import { Link, LinkIcon, MapPinIcon } from "lucide-react";
-import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
-import { Separator } from "@radix-ui/react-separator";
+import { LinkIcon, MapPinIcon } from "lucide-react";
+import { Avatar, AvatarImage } from "./ui/avatar";
+import { Separator } from "./ui/separator";
 async function Sidebar() {
     const authUser = await currentUser()
     if (!authUser) return <UnauthenticatedSidebar />;
