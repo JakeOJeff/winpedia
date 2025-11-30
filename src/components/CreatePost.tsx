@@ -9,11 +9,11 @@ import { Button } from "./ui/button";
 import { ImageIcon, Loader2Icon, SendIcon } from "lucide-react";
 
 function CreatePost() {
-    const { user } = useUser();
-    const { content, setContent } = useState("");
-    const { imageUrl, setImageUrl } = useState("");
-    const { isPosting, setIsPosting } = useState(false);
-    const { showImageUpload, setShowImageUplaod } = useState(false);
+  const { user } = useUser();
+  const [content, setContent] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [isPosting, setIsPosting] = useState(false);
+  const [showImageUpload, setShowImageUpload] = useState(false);
 
     const handleSubmit = async () => { }
 
