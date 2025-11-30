@@ -1,33 +1,13 @@
-import Image from "next/image";
-import {
-  ClerkProvider,
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from '@clerk/nextjs'
-import { Button } from "@/components/ui/button";
-import ModeToggle from "@/components/ModeToggle";
-export default function Home() {
+
+import { currentUser } from "@clerk/nextjs/server";
+
+export default async function Home() {
+  const user = await currentUser();
+
+
   return (
-    <div className="m-4">
-      <SignedOut>
-        <SignInButton mode="modal">
-          <Button>
-            Sign In
-          </Button>
-        </SignInButton>
-        <SignUpButton mode="modal">
-          <Button variant={"secondary"}>
-            Sign Up
-          </Button>
-        </SignUpButton>
-      </SignedOut>
-      <SignedIn>
-        <UserButton />
-      </SignedIn>
-      <ModeToggle></ModeToggle>
+    <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
+
     </div>
   );
 }
