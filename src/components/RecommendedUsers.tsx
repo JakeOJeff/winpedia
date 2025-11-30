@@ -5,6 +5,8 @@ import Link from "next/link"
 import {Card, CardContent, CardHeader, CardTitle } from "./ui/card"
 import { Avatar, AvatarImage } from './ui/avatar'
 
+import FollowButton from './FollowButton'
+
 async function RecommendedUsers() {
   
   const users = await getRandomUsers()
@@ -35,6 +37,7 @@ async function RecommendedUsers() {
                                 <p className="text-muted-foreground">{user._count.followers} followers</p>
                             </div>
                         </div>
+                        <FollowButton userId={user.id} />
                     </div>
                 ))}
             </div>
