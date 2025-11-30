@@ -15,7 +15,18 @@ function CreatePost() {
   const [isPosting, setIsPosting] = useState(false);
   const [showImageUpload, setShowImageUpload] = useState(false);
 
-    const handleSubmit = async () => { }
+    const handleSubmit = async () => {
+        if ((!content.trim()) && !imageUrl) return
+
+        setIsPosting(true);
+        try {
+            await ceatePost(content, imageUrl)
+        } catch(error) {
+
+        } finally {
+            setIsPosting(false)
+        }
+    }
 
     return (
         <Card className="mb-6">
