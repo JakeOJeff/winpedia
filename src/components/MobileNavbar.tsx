@@ -2,7 +2,7 @@
 
 import {
   BellIcon,
-  HomeIcon,
+  Rss,
   LogOutIcon,
   MenuIcon,
   MoonIcon,
@@ -47,8 +47,8 @@ function MobileNavbar() {
           <nav className="flex flex-col space-y-4 mt-6">
             <Button variant="ghost" className="flex items-center gap-3 justify-start" asChild>
               <Link href="/">
-                <HomeIcon className="w-4 h-4" />
-                Home
+                <Rss className="w-4 h-4" />
+                Feed
               </Link>
             </Button>
 
