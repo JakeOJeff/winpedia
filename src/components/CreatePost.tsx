@@ -7,6 +7,7 @@ import { Avatar, AvatarImage } from "./ui/avatar";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { ImageIcon, Loader2Icon, SendIcon } from "lucide-react";
+import { createPost } from "@/actions/post.action";
 
 function CreatePost() {
   const { user } = useUser();
@@ -20,7 +21,12 @@ function CreatePost() {
 
         setIsPosting(true);
         try {
-            await ceatePost(content, imageUrl)
+            const result = await createPost(content, imageUrl)
+            if (result?.success) {
+                setContent("");
+                setImageUrl("");
+                setShowImageUpload(false);
+            }
         } catch(error) {
 
         } finally {
@@ -53,7 +59,7 @@ function CreatePost() {
                                 variant="ghost"
                                 size="sm"
                                 className="text-muted-foreground hover:text-primary"
-                                onClick={() => setShowImageUplaod(!showImageUpload)}
+                                onClick={() => setShowImageUpload(!showImageUpload)}
                                 disabled={isPosting}
                             >
                                 <ImageIcon className="size-4 mr-2" />
