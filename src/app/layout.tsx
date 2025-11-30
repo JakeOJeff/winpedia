@@ -43,7 +43,20 @@ export default function RootLayout({
           >
             <div className="min-h-screen">
               <Navbar />
-              {children}
+              <main className="py-8">
+                {/*Center Content  */}
+                <div className="max-w-7xl mx-auto px-4">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <div className="hidden lg:block lg:cols-span-3">
+
+                    </div>
+                    <div className="lg:col-span-9">
+                      {children}
+                    </div>
+                  </div>
+                </div>
+
+              </main>
 
             </div>
           </ThemeProvider>
