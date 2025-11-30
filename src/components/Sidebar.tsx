@@ -8,7 +8,10 @@ async function Sidebar() {
     return <div>Sidebar</div> 
 }
 
-const UnauthenticatedSidebar = () => {
+
+export default Sidebar
+
+const UnauthenticatedSidebar = () => (
     <div className="sticky top-20">
         <Card>
             <CardHeader>
@@ -31,6 +34,4 @@ const UnauthenticatedSidebar = () => {
             </CardContent>
         </Card>
     </div>
-}
-
-export default Sidebar
+);
