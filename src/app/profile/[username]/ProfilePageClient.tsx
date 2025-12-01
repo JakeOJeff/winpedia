@@ -20,6 +20,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { SignInButton, useUser } from "@clerk/nextjs";
 import { format } from "date-fns";
+import { Snowflake, Droplet, Flame } from "lucide-react";
+import { getTodaysPostCount } from "@/actions/post.action";
+
 import {
   CalendarIcon,
   EditIcon,
@@ -28,7 +31,7 @@ import {
   LinkIcon,
   MapPinIcon,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 
 type User = Awaited<ReturnType<typeof getProfileByUsername>>;
@@ -91,20 +94,80 @@ function ProfilePageClient({
     currentUser?.emailAddresses[0].emailAddress.split("@")[0] === user.username;
 
   const formattedDate = format(new Date(user.createdAt), "MMMM yyyy");
+  const [postsToday, setPostsToday] = useState<number | null>(null);
+  const [state, setState] = useState("Frozen");
+  const [StateIcon, setStateIcon] = useState(() => Snowflake);
+
+  useEffect(() => {
+    const fetchCount = async () => {
+      const count = await getTodaysPostCount();
+      setPostsToday(count);
+
+      if (count === 0) {
+        setState("Frozen");
+        setStateIcon(() => Snowflake);
+      } else if (count < 2) {
+        setState("Melting");
+        setStateIcon(() => Droplet);
+      } else {
+        setState("Melted");
+        setStateIcon(() => Flame);
+      }
+    };
+
+    fetchCount();
+  }, []);
 
   return (
     <div className="max-w-3xl mx-auto">
       <div className="grid grid-cols-1 gap-6">
         <div className="w-full max-w-lg mx-auto">
-          <Card className="bg-card">
+          <Card className="bg-card w-full">
             <CardContent className="pt-6">
-              <div className="flex flex-col items-center text-center">
-                <Avatar className="w-24 h-24">
-                  <AvatarImage src={user.image ?? "/avatar.png"} />
-                </Avatar>
-                <h1 className="mt-4 text-2xl font-bold">{user.name ?? user.username}</h1>
-                <p className="text-muted-foreground">@{user.username}</p>
-                <p className="mt-2 text-sm">{user.bio}</p>
+              <div>
+                <div className="flex flex-col gap-6">
+
+                  {/* Top row — Avatar + Follow Button */}
+                  <div className="flex items-start justify-between w-full">
+
+                    {/* Avatar */}
+                    <Avatar className="w-24 h-24">
+                      <AvatarImage src={user.image ?? "/avatar.png"} />
+                    </Avatar>
+
+                    {/* Buttons */}
+                    <div className="flex flex-col items-end">
+                      {!currentUser ? (
+                        <SignInButton mode="modal">
+                          <Button className="px-6">Follow</Button>
+                        </SignInButton>
+                      ) : isOwnProfile ? (
+                        <Button onClick={() => setShowEditDialog(true)} className="px-6">
+                          <EditIcon className="size-4 mr-2" />
+                          Edit Profile
+                        </Button>
+                      ) : (
+                        <Button
+                          onClick={handleFollow}
+                          disabled={isUpdatingFollow}
+                          variant={isFollowing ? "outline" : "default"}
+                          className="px-6"
+                        >
+                          {isFollowing ? "Unfollow" : "Follow"}
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Name, username, bio */}
+                  <div className="text-left">
+                    <h1 className="text-2xl font-semibold">{user.name ?? user.username}</h1>
+                    <p className="text-muted-foreground">@{user.username}</p>
+                    {user.bio && <p className="mt-2 text-sm leading-relaxed">{user.bio}</p>}
+                  </div>
+
+                </div>
+
 
                 {/* PROFILE STATS */}
                 <div className="w-full mt-6">
@@ -120,61 +183,62 @@ function ProfilePageClient({
                     </div>
                     <Separator orientation="vertical" />
                     <div>
+                      <div className="flex items-center justify-center">
+                        <div className="font-semibold">
+                          {postsToday !== null ? postsToday : "…"}
+                        </div>
+                        <StateIcon className="w-4 h-4 animate-pulse" />
+                      </div>
+                      <div className="text-sm text-muted-foreground">{state}</div>
+
+                    </div>
+                    <Separator orientation="vertical" />
+                    <div>
                       <div className="font-semibold">{user._count.posts.toLocaleString()}</div>
                       <div className="text-sm text-muted-foreground">Posts</div>
                     </div>
                   </div>
                 </div>
 
-                {/* "FOLLOW & EDIT PROFILE" BUTTONS */}
-                {!currentUser ? (
-                  <SignInButton mode="modal">
-                    <Button className="w-full mt-4">Follow</Button>
-                  </SignInButton>
-                ) : isOwnProfile ? (
-                  <Button className="w-full mt-4" onClick={() => setShowEditDialog(true)}>
-                    <EditIcon className="size-4 mr-2" />
-                    Edit Profile
-                  </Button>
-                ) : (
-                  <Button
-                    className="w-full mt-4"
-                    onClick={handleFollow}
-                    disabled={isUpdatingFollow}
-                    variant={isFollowing ? "outline" : "default"}
-                  >
-                    {isFollowing ? "Unfollow" : "Follow"}
-                  </Button>
-                )}
+
 
                 {/* LOCATION & WEBSITE */}
-                <div className="w-full mt-6 space-y-2 text-sm">
-                  {user.location && (
-                    <div className="flex items-center text-muted-foreground">
-                      <MapPinIcon className="size-4 mr-2" />
-                      {user.location}
-                    </div>
-                  )}
-                  {user.website && (
-                    <div className="flex items-center text-muted-foreground">
-                      <LinkIcon className="size-4 mr-2" />
-                      <a
-                        href={
-                          user.website.startsWith("http") ? user.website : `https://${user.website}`
-                        }
-                        className="hover:underline"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {user.website}
-                      </a>
-                    </div>
-                  )}
+                <div className="w-full mt-6 text-sm flex flex-col space-y-2">
+
+                  {/* Row 1 — Location + Website */}
+                  <div className="flex items-center gap-6 text-muted-foreground">
+
+                    {user.location && (
+                      <div className="flex items-center">
+                        <MapPinIcon className="size-4 mr-2" />
+                        {user.location}
+                      </div>
+                    )}
+
+                    {user.website && (
+                      <div className="flex items-center">
+                        <LinkIcon className="size-4 mr-2" />
+                        <a
+                          href={user.website.startsWith("http") ? user.website : `https://${user.website}`}
+                          className="hover:underline"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {user.website}
+                        </a>
+                      </div>
+                    )}
+
+                  </div>
+
+                  {/* Row 2 — Joined Date */}
                   <div className="flex items-center text-muted-foreground">
                     <CalendarIcon className="size-4 mr-2" />
                     Joined {formattedDate}
                   </div>
+
                 </div>
+
               </div>
             </CardContent>
           </Card>
@@ -274,7 +338,7 @@ function ProfilePageClient({
           </DialogContent>
         </Dialog>
       </div>
-    </div>
+    </div >
   );
 }
 export default ProfilePageClient;
