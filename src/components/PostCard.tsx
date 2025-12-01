@@ -8,7 +8,7 @@ import { Card, CardContent } from "./ui/card";
 import Link from "next/link";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { formatDistanceToNow } from "date-fns";
-// import { DeleteAlertDialog } from "./DeleteAlertDialog";
+import { DeleteAlertDialog } from "./DeleteAlertDialog";
 import { Button } from "./ui/button";
 import { HeartIcon, LogInIcon, MessageCircleIcon, SendIcon } from "lucide-react";
 import { Textarea } from "./ui/textarea";
@@ -104,8 +104,7 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
                                 </div>
                                 {/* Check if current user is the post author */}
                                 {dbUserId === post.author.id && (
-                                    // <DeleteAlertDialog isDeleting={isDeleting} onDelete={handleDeletePost} />
-                                    <></>
+                                    <DeleteAlertDialog isDeleting={isDeleting} onDelete={handleDeletePost} />
                                 )}
                             </div>
                             <p className="mt-2 text-sm text-foreground break-words">{post.content}</p>
