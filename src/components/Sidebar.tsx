@@ -60,9 +60,9 @@ async function Sidebar() {
                             </div>
                             <Separator orientation="vertical" />
                             <div>
-                                <div className="flex items-center justify-center">
+                                <div className="flex items-center justify-center ">
                                 <p className="font-medium">{postsToday}</p>
-                                <StateIcon className="w-4 h-4" />
+                                <StateIcon className="w-4 h-4 animate-pulse" />
                                 </div>
                                 <p className="text-xs text-muted-foreground">{state}</p>
                             </div>
