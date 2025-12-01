@@ -2,8 +2,11 @@
 import { getNotifications, markNotificationsAsRead } from "@/actions/notification.action";
 import { NotificationsSkeleton } from "@/components/NotificationSkeleton";
 import { useEffect, useState } from "react";
-import { Card,  CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import toast from "react-hot-toast";
+import { formatDistanceToNow } from "date-fns";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 type Notifications = Awaited<ReturnType<typeof getNotifications>>
 type Notification = Notifications[number]
@@ -58,7 +61,7 @@ return (
                   </Avatar>
                   <div className="flex-1 space-y-1">
                     <div className="flex items-center gap-2">
-                      {getNotificationIcon(notification.type)}
+                      {/* {getNotificationIcon(notification.type)} */}
                       <span>
                         <span className="font-medium">
                           {notification.creator.name ?? notification.creator.username}
