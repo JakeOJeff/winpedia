@@ -27,6 +27,24 @@ export async function createPost(content: string, image: string) {
 }
 
 
+export async function getTodaysPostCount() {
+  const userId = await getDbUserId();
+  if (!userId) return 0;
+
+  const startOfDay = new Date();
+  startOfDay.setHours(0, 0, 0, 0);
+
+  const count = await prisma.post.count({
+    where: {
+      authorId: userId,
+      createdAt: {
+        gte: startOfDay,
+      },
+    },
+  });
+
+  return count;
+}
 export async function getPosts() {
     try {
         const posts = await prisma.post.findMany({
