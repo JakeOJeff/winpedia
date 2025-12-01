@@ -4,8 +4,9 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import Navbar from "@/components/Navbar";
-import Sidebar  from "@/components/Sidebar";
-import {Toaster} from "react-hot-toast"
+import Sidebar from "@/components/Sidebar";
+import { Toaster } from "react-hot-toast"
+import Particles from "@/components/Particles";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -32,6 +33,20 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+
+          <div className="fixed inset-0 -z-10 pointer-events-none">
+            <Particles
+              particleColors={['#ffffff', '#ffffff']}
+              particleCount={200}
+              particleSpread={10}
+              speed={0.1}
+              particleBaseSize={50}
+              moveParticlesOnHover={false}
+              alphaParticles={true}
+              disableRotation={true}
+            />
+          </div>
+
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -42,7 +57,6 @@ export default function RootLayout({
               <Navbar />
 
               <main className="py-8">
-                {/* container to center the content */}
                 <div className="max-w-7xl mx-auto px-4">
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     <div className="hidden lg:block lg:col-span-3">
@@ -58,5 +72,6 @@ export default function RootLayout({
         </body>
       </html>
     </ClerkProvider>
+
   );
 }
