@@ -25,7 +25,8 @@ model User {
   website String?
   createdAt DateTime @default(now()) // member since 2020
   updatedAt DateTime @updatedAt
-
+  iceState IceState @default(FROZEN)
+  iceMeltedUntil DateTime? // if set and > now => the ice is melted for the user
   // Relations: 
   posts Post[] // One-to-many
   comments Comment[] // One-to-many
@@ -114,6 +115,10 @@ model Notification {
   comment   Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
 
   @@index([userId, createdAt])
+}
+enum IceState {
+  FROZEN
+  MELTED
 }
 
 enum NotificationType {
