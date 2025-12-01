@@ -31,7 +31,7 @@ export function DeleteAlertDialog({
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button
-          variant="ghost"
+          variant="empty"
           size="sm"
           className="text-muted-foreground hover:text-red-500 -mr-2"
         >
