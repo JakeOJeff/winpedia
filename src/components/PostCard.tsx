@@ -47,7 +47,7 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
       setIsCommenting(true);
       const result = await createComment(post.id, newComment);
       if (result?.success) {
-        toast.success("Comment posted successfully");
+        toast.success(`Successfully commented on ${post.author.name}'s post!`);
         setNewComment("");
       }
     } catch (error) {
@@ -118,7 +118,7 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
           <div className="flex items-center pt-2 space-x-4">
             {user ? (
               <Button
-                variant="ghost"
+                variant="empty"
                 size="sm"
                 className={`text-muted-foreground gap-2 ${
                   hasLiked ? "text-red-500 hover:text-red-600" : "hover:text-red-500"
@@ -142,7 +142,7 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
             )}
 
             <Button
-              variant="ghost"
+              variant="empty"
               size="sm"
               className="text-muted-foreground gap-2 hover:text-blue-500"
               onClick={() => setShowComments((prev) => !prev)}
