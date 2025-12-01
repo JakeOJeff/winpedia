@@ -8,12 +8,29 @@ import { getUserByClerkId } from "@/actions/user.action";
 import { LinkIcon, MapPinIcon } from "lucide-react";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Separator } from "./ui/separator";
+import { getTodaysPostCount } from "@/actions/post.action";
+import { Snowflake, Droplet, Flame } from "lucide-react";
 async function Sidebar() {
     const authUser = await currentUser()
     if (!authUser) return <UnauthenticatedSidebar />;
 
     const user = await getUserByClerkId(authUser.id);
     if (!user) return null
+
+    const postsToday = await getTodaysPostCount();
+    let state = "Frozen"
+    let StateIcon = Snowflake
+
+    if (postsToday == 0){
+        state = "Frozen"
+        StateIcon = Snowflake
+    } else if (postsToday < 2) {
+        state = "Melting"
+        StateIcon = Droplet
+    } else {
+        state = "Melted"
+        StateIcon = Flame
+    }
 
     return (<div className="sticky top-20">
         <Card>
@@ -40,6 +57,14 @@ async function Sidebar() {
                             <div>
                                 <p className="font-medium">{user._count.following}</p>
                                 <p className="text-xs text-muted-foreground">Following</p>
+                            </div>
+                            <Separator orientation="vertical" />
+                            <div>
+                                <div className="flex items-center justify-center">
+                                <p className="font-medium">{postsToday}</p>
+                                <StateIcon className="w-4 h-4" />
+                                </div>
+                                <p className="text-xs text-muted-foreground">{state}</p>
                             </div>
                             <Separator orientation="vertical" />
                             <div>
