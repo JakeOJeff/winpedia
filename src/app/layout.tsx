@@ -42,7 +42,7 @@ export default function RootLayout({
               speed={0.1}
               particleBaseSize={50}
               moveParticlesOnHover={false}
-              alphaParticles={true}
+              alphaParticles={false}
               disableRotation={true}
             />
           </div>
